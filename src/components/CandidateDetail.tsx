@@ -4,6 +4,10 @@ import ProgressCard from "./ProgressCard";
 import { getCandidateProgress } from "../service/api";
 import { ProgressStep } from "../interface/ICandidate";
 import { makeStyles } from "@material-ui/core/styles";
+import { IconButton } from "@mui/material";
+import { ArrowBackIos } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+
 
 const useStyles = makeStyles((theme) => ({
   candidateDetail: {
@@ -30,6 +34,7 @@ const CandidateDetail = () => {
   const classes = useStyles();
   const { candidateId } = useParams();
   const [progress, setProgress] = useState<ProgressStep[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProgress = async () => {
@@ -47,6 +52,9 @@ const CandidateDetail = () => {
 
   return (
     <div className={classes.candidateDetail}>
+           <IconButton onClick={() => navigate(-1)}>
+        <ArrowBackIos />
+      </IconButton>
       <h2 className={classes.heading}>Candidate Details</h2>
       <p className={classes.paragraph}>Candidate ID: {candidateId}</p>
 

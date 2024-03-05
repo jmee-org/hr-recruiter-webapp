@@ -6,10 +6,12 @@ export interface Candidate {
   }
 
   export interface Job {
+    id: number;
     title: string;
     description: string;
     status: string;
     candidates: Candidate[];
+    candidateCount: number;
   }
 
   export interface ProgressStep {

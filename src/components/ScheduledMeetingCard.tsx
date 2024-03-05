@@ -1,11 +1,22 @@
 import React, { useState } from "react";
-import { Card, Button, Modal, DatePicker, Space, Select } from "antd";
-import moment from "moment";
+import { Card, Button, Modal, DatePicker, Space, Select, Avatar, Badge } from "antd";
 import { makeStyles } from "@material-ui/core/styles";
+import { Create, Event, Group } from "@mui/icons-material";
+import { Chip, IconButton } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
-  editButton: {
+  createButton: {
     marginLeft: "10px",
+    color: "black"
+  },
+  editIcon: {
+    marginRight: "5px",
+    fontSize: "1.0rem",
+  },
+  cardTitle: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 }));
 
@@ -32,9 +43,10 @@ const EditMeetingModal = ({ date, participants, onSave, allParticipants }) => {
 
   return (
     <>
-      <Button type="primary" onClick={showModal} className={classes.editButton}>
-        Edit
-      </Button>
+      <IconButton className={classes.createButton} onClick={showModal}>
+        <Create fontSize="small" />
+      </IconButton>
+
       <Modal
         title="Edit Meeting"
         visible={isModalVisible}
@@ -47,7 +59,7 @@ const EditMeetingModal = ({ date, participants, onSave, allParticipants }) => {
             format="YYYY-MM-DD HH:mm:ss"
             placeholder="Select date and time"
             onChange={(date) => setEditedDate(date ? date.valueOf() : null)}
-            />
+          />
           <Select
             mode="multiple"
             placeholder="Select participants"
@@ -72,16 +84,35 @@ const ScheduledMeetingCard = ({
   onEdit,
   allParticipants,
 }) => {
+  const classes = useStyles();
+  
   return (
-    <Card title="Scheduled Meeting">
-      <p>Date: {date}</p>
-      <p>Participants: {participants.join(", ")}</p>
-      <EditMeetingModal
-        date={date}
-        participants={participants}
-        onSave={onEdit}
-        allParticipants={allParticipants}
+    <Card
+      title={
+        <div className={classes.cardTitle}>
+          Scheduled Meeting
+          <EditMeetingModal
+            date={date}
+            participants={participants}
+            onSave={onEdit}
+            allParticipants={allParticipants}
+          />
+        </div>
+      }
+    >
+      <div >
+      <Chip
+        icon={<Event />}
+        label={`Date: ${date}`}
+        style={{ marginBottom: '8px' }}
       />
+      <Chip
+        icon={<Group />}
+        label={`Participants: ${participants.join(', ')}`}
+        variant="outlined"
+        style={{ marginBottom: '8px' }}
+      />
+      </div>
     </Card>
   );
 };

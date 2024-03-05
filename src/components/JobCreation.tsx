@@ -12,7 +12,6 @@ import { Delete } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
   createJobContainer: {
-    maxWidth: "600px",
     margin: "0 auto",
     padding: "20px",
     border: "1px solid #ddd",
@@ -48,6 +47,13 @@ const useStyles = makeStyles((theme) => ({
   stepCard: {
     position: "relative",
     marginBottom: "20px",
+    width: "400px"
+  },
+  stepsRow: {
+    display: "flex",
+    gap: "20px",
+    justifyContent: "center",
+    flexWrap: "wrap",
   },
 }));
 
@@ -123,6 +129,7 @@ const CreateJob = () => {
         onChange={handleDescriptionChange}
       />
       <h2>Steps:</h2>
+      <div className={classes.stepsRow}>
       {steps.map((step, index) => (
         <div className={classes.stepCard}>
           <IconButton
@@ -168,6 +175,7 @@ const CreateJob = () => {
           </Card>
         </div>
       ))}
+      </div>
       <Button
         variant="contained"
         className={`${classes.addButton} ${classes.formControl}`}

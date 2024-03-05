@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { getJobDetails } from "../service/api";
 import { makeStyles } from "@material-ui/styles";
 import GroupIcon from "@mui/icons-material/Group";
+import Chip from "@mui/material/Chip";
+
 const useStyles = makeStyles((theme) => ({
   jobCard: {
     border: "none",
@@ -74,14 +76,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "0.7rem",
   },
   // Define different badge colors based on job status
-  badgeOpen: {
-    backgroundColor: "#4CAF50", // Green for 'Open' status
-    color: "#fff",
-  },
-  badgeClosed: {
-    backgroundColor: "#F44336", // Red for 'Closed' status
-    color: "#fff",
-  },
   candidateCount: {
     display: "flex",
     alignItems: "center",
@@ -123,13 +117,10 @@ const JobCard = ({ job }) => {
               <GroupIcon className={classes.icon} />
               {candidateCount}
             </p>
-            <p
-              className={`${classes.statusBadge} ${
-                status === "Open" ? classes.badgeOpen : classes.badgeClosed
-              }`}
-            >
-              {status}
-            </p>
+            <Chip
+              label={status}
+              color={status === "Open" ? "success": "warning"}
+            />
           </div>
           {jobDetails && (
             <div className={classes.detailsSection}>

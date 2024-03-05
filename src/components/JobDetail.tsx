@@ -6,6 +6,9 @@ import { Job } from "../interface/ICandidate";
 import { makeStyles } from "@material-ui/styles";
 import GroupIcon from "@mui/icons-material/Group";
 import Chip from "@mui/material/Chip";
+import { useNavigate } from "react-router-dom";
+import { IconButton } from "@mui/material";
+import { ArrowBackIos } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
   jobDetailContainer: {
@@ -96,6 +99,7 @@ const JobDetail = () => {
   const classes = useStyles();
   const { jobId } = useParams();
   const [job, setJob] = useState<Job | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchJobDetails = async () => {
@@ -114,6 +118,9 @@ const JobDetail = () => {
 
   return (
     <div className={classes.jobDetailContainer}>
+      <IconButton onClick={() => navigate(-1)}>
+        <ArrowBackIos />
+      </IconButton>
       <div className={classes.jobCard}>
         <h2 className={classes.jobTitle}>{title}</h2>
 
@@ -125,16 +132,13 @@ const JobDetail = () => {
             </p>
             <Chip
               label={status}
-              className={
-                status === "Open" ? classes.badgeOpen : classes.badgeClosed
-              }
+              color={status === "Open" ? "success" : "warning"}
             />
           </div>
         </div>
 
         <p className={classes.jobDescription}>{description}</p>
       </div>
-
       <h3>Candidates</h3>
       <ul className={classes.candidatesList}>
         {candidates.map((candidate) => (

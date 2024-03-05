@@ -5,13 +5,16 @@ const mockStepOptions = [
   "Option 1",
   "Option 2",
   "Option 3",
-  // Add more options as needed
 ];
+
+const jobStatusOptions = [
+  "All", "Open", "Closed", "In Progress"
+];
+
 
 const mockProgressDetails = {
   12: { status: 'Completed', feedback: 'Good performance', scheduledMeeting: '2024-03-15T14:30:00', participants: ['John Doe', 'Jane Smith', 'Bob Johnson', 'Alice Willi']},
   13: { status: 'In Progress', feedback: '', scheduledMeeting: '2024-03-15T14:30:00', participants: ['John Doe', 'Jane Smith', 'Bob Johnson', 'Alice Willi'] },
-  // Add more progress details as needed
 };
 
 
@@ -20,21 +23,17 @@ const mockCandidateProgress = {
   101: [
     { stepName: 'Interview 1', status: 'Completed', progressId:12, feedback: 'Good performance' },
     { stepName: 'Technical Test', status: 'In Progress',  progressId:13, feedback: '' },
-    // Add more progress steps for candidate 101 as needed
   ],
   102: [
     { stepName: 'Interview 1', status: 'Completed',  progressId:22,  feedback: 'Excellent performance' },
     { stepName: 'Technical Test', status: 'Completed', progressId:23,  feedback: 'Passed with flying colors' },
-    // Add more progress steps for candidate 102 as needed
   ],
-  // Add more mock data for other candidates as needed
 };
 
 // Mock data for job listings
 const mockJobListings = [
     { id: 1, title: 'Software Engineer', status: 'Open', candidateCount: 2 },
     { id: 2, title: 'Data Analyst', status: 'Closed', candidateCount: 2 },
-    // Add more mock job listings as needed
   ];
   
   // Mock data for job details
@@ -47,7 +46,6 @@ const mockJobListings = [
       candidates: [
         { id: 101, name: 'John Doe', progressStatus:'3/4' },
         { id: 102, name: 'Jane Smith',progressStatus:'2/4'},
-        // Add more mock candidates as needed
       ],
     },
     {
@@ -58,10 +56,8 @@ const mockJobListings = [
       candidates: [
         { id: 201, name: 'Alice Johnson' },
         { id: 202, name: 'Bob Williams' },
-        // Add more mock candidates as needed
       ],
     },
-    // Add more mock job details as needed
   ];
   
   // Mock API function to get job listings
@@ -100,6 +96,17 @@ const mockJobListings = [
   };
 
   export const getProgressDetails = async (progressId) => {  
+    // const response = await axios.get('/api/progressDetail/${progressId}');
+    // return response.data;
+
     // For now, return the mock data
     return mockProgressDetails[progressId] || null;
+  };
+
+  export const getJobStatusOptions = async () => {
+   // const response = await axios.get('/api/jobStatus');
+    // return response.data;
+
+    // For now, return the mock data
+    return jobStatusOptions;
   };
