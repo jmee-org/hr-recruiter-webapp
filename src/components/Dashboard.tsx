@@ -93,7 +93,7 @@ const Dashboard = () => {
 
   return (
     <div className={classes.dashboard}>
-      <div style={{ display: "flex", justifyContent:"space-between", alignItems:"center"}}>
+      <div style={{ display: "flex", justifyContent:"space-between", alignItems:"center", width:"100%"}}>
         <h1>Job Listings</h1>
         <Select
           value={statusFilter}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Menu, Dashboard, Create } from "@mui/icons-material";
+import { Menu, Dashboard, Create,PersonSearch } from "@mui/icons-material";
 import { makeStyles } from "@material-ui/core/styles";
 import { IconButton } from "@mui/material";
 
@@ -16,7 +16,7 @@ const useStyles = makeStyles({
     left: 0,
     bottom: 0,
     boxShadow: "4px 0px 7px rgba(0, 0, 0, 0.2)",
-    transition: "width 0.3s ease", // Add transition property
+    transition: "width 0.3s ease",
     zIndex: 9999,
   },
   menuButton: {
@@ -33,6 +33,9 @@ const useStyles = makeStyles({
   icon: {
     marginRight: "5px",
   },
+  linkStyle:{
+    textDecoration: "none",
+  }
 });
 
 const LeftMenu = () => {
@@ -75,7 +78,7 @@ const LeftMenu = () => {
           </IconButton>
         </div>
         <div>
-          <a href="/">
+          <a className={classes.linkStyle} href="/">
             <div className={classes.listItem}>
               <IconButton>
                 <Dashboard className={classes.icon} />
@@ -83,10 +86,18 @@ const LeftMenu = () => {
               {isMenuOpen && <span>Dashboard</span>}
             </div>
           </a>
-          <a href="/create-job">
+          <a className={classes.linkStyle} href="/create-job">
             <div className={classes.listItem}>
               <IconButton>
                 <Create className={classes.icon} />
+              </IconButton>
+              {isMenuOpen && <span>Create Job</span>}
+            </div>
+          </a>
+           <a className={classes.linkStyle} href="/search">
+            <div className={classes.listItem}>
+              <IconButton>
+                <PersonSearch className={classes.icon} />
               </IconButton>
               {isMenuOpen && <span>Create Job</span>}
             </div>

@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import { getProgressDetails } from "../service/api";
-import { Button, Modal, DatePicker, Space, Select } from "antd";
+import { Button, DatePicker, Space, Select } from "antd";
 import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
 import ScheduledMeetingCard from "./ScheduledMeetingCard";
 import { useNavigate } from "react-router-dom";
-import { ArrowBackIos } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
+import { Dialog, DialogContent } from "@mui/material";
 
 interface ProgressDetails {
   status: string;
@@ -52,9 +50,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ProgressDetail = () => {
+const ProgressDetail = ({ progressId }) => {
   const classes = useStyles(); // Use the styles
-  const { progressId } = useParams();
+  // const { progressId } = useParams();
   const [progressDetails, setProgressDetails] =
     useState<ProgressDetails | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -109,10 +107,7 @@ const ProgressDetail = () => {
 
   return (
     <>
-      <IconButton onClick={() => navigate(-1)}>
-        <ArrowBackIos />
-      </IconButton>
-      <div className={classes.progressDetailContainer}>
+      <div>
         {progressDetails ? (
           <div>
             <h1>Progress Details</h1>
@@ -126,7 +121,7 @@ const ProgressDetail = () => {
             </div>
 
             {progressDetails.scheduledMeeting && (
-              <div className={classes.meetingCard}>
+              <div>
                 <ScheduledMeetingCard
                   date={progressDetails.scheduledMeeting}
                   participants={progressDetails.participants}
@@ -137,45 +132,43 @@ const ProgressDetail = () => {
             )}
 
             <div className={classes.meetingSection}>
-              <Button
-                onClick={showModal}
-                className={classes.meetingButton}
-              >
+              <Button onClick={showModal} className={classes.meetingButton}>
                 Schedule Meeting
               </Button>
 
-              <Modal
-                title="Schedule Meeting"
-                visible={isModalVisible}
-                onOk={handleOk}
-                onCancel={handleCancel}
+              <Dialog
+                style={{ zIndex: 1000 }}
+                open={isModalVisible}
+                onClose={handleCancel}
               >
-                <Space direction="vertical" size={12}>
-                  <DatePicker
-                    showTime
-                    format="YYYY-MM-DD HH:mm:ss"
-                    placeholder="Select date and time"
-                    onChange={(date) =>
-                      setSelectedDate(date ? date.valueOf() : null)
-                    }
-                  />
-                  <Select
-                    mode="multiple"
-                    placeholder="Select participants"
-                    value={selectedParticipants}
-                    onChange={(values) =>
-                      setSelectedParticipants(values as string[])
-                    }
-                    className={classes.participantSelect}
-                  >
-                    {mockParticipants.map((participant) => (
-                      <Select.Option key={participant} value={participant}>
-                        {participant}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Space>
-              </Modal>
+                <DialogContent>
+                  <Space direction="vertical" size={12}>
+                    <DatePicker
+                      showTime
+                      format="YYYY-MM-DD HH:mm:ss"
+                      placeholder="Select date and time"
+                      onChange={(date) =>
+                        setSelectedDate(date ? date.valueOf() : null)
+                      }
+                    />
+                    <Select
+                      mode="multiple"
+                      placeholder="Select participants"
+                      value={selectedParticipants}
+                      onChange={(values) =>
+                        setSelectedParticipants(values as string[])
+                      }
+                      className={classes.participantSelect}
+                    >
+                      {mockParticipants.map((participant) => (
+                        <Select.Option key={participant} value={participant}>
+                          {participant}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </Space>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         ) : (

@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { Card, Button, Modal, DatePicker, Space, Select, Avatar, Badge } from "antd";
+import { Card, Select,DatePicker } from "antd";
 import { makeStyles } from "@material-ui/core/styles";
 import { Create, Event, Group } from "@mui/icons-material";
-import { Chip, IconButton } from "@mui/material";
+import { Chip,Dialog, DialogContent, IconButton } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
-  createButton: {
+  editButton: {
     marginLeft: "10px",
-    color: "black"
   },
   editIcon: {
     marginRight: "5px",
@@ -43,21 +42,19 @@ const EditMeetingModal = ({ date, participants, onSave, allParticipants }) => {
 
   return (
     <>
-      <IconButton className={classes.createButton} onClick={showModal}>
+      <IconButton className={classes.editButton} onClick={showModal}>
         <Create fontSize="small" />
       </IconButton>
 
-      <Modal
+      <Dialog
+      style={{ zIndex: 1000 }}
         title="Edit Meeting"
-        visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
+        open={isModalVisible}
+        onClose={handleCancel}
       >
-        <Space direction="vertical" size={12}>
+        <DialogContent>
           <DatePicker
-            showTime
             format="YYYY-MM-DD HH:mm:ss"
-            placeholder="Select date and time"
             onChange={(date) => setEditedDate(date ? date.valueOf() : null)}
           />
           <Select
@@ -72,8 +69,11 @@ const EditMeetingModal = ({ date, participants, onSave, allParticipants }) => {
               </Select.Option>
             ))}
           </Select>
-        </Space>
-      </Modal>
+        </DialogContent>
+      </Dialog>
+
+
+
     </>
   );
 };

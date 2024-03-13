@@ -8,20 +8,54 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { Select, MenuItem, InputLabel, IconButton } from "@material-ui/core";
 import { getStepOptions } from "../service/api";
-import { Delete } from "@mui/icons-material";
+import { Add, Delete } from "@mui/icons-material";
+import { relative } from "path";
+import { FormControl } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
+  jobCard: {
+    border: "none",
+    margin: "10px",
+    borderRadius: "10px",
+    overflow: "hidden",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    width: "300px",
+    background: "#ffffff",
+  },
+  jobHeader: {
+    background: "linear-gradient(to right, #333333, #666666)",
+    color: "#ffffff",
+    padding: "16px",
+    borderRadius: "10px 10px 0 0",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  jobInfo: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  jobTitle: {
+    margin: 0,
+    fontSize: "1.6rem",
+    fontWeight: "bold",
+    textTransform: "capitalize",
+  },
+  jobBody: {
+    background: "#ffffff",
+    padding: "16px",
+  },
+
   createJobContainer: {
     margin: "0 auto",
     padding: "20px",
-    border: "1px solid #ddd",
-    borderRadius: "5px",
   },
   deleteButton: {
     color: "white",
     position: "absolute",
-    top: "-23px",
-    right: "-23px",
+    top: "-11px",
+    right: "-11px",
     fontSize: "small",
     backgroundColor: "#ff0000",
   },
@@ -36,6 +70,8 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: "#218838",
     },
+    width: "10px",
+    heigth: "10px",
   },
   saveButton: {
     backgroundColor: "#007bff",
@@ -47,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
   stepCard: {
     position: "relative",
     marginBottom: "20px",
-    width: "400px"
+    width: "400px",
   },
   stepsRow: {
     display: "flex",
@@ -105,12 +141,35 @@ const CreateJob = () => {
   };
 
   const handleCreateJob = () => {
-    console.log("created");
+    console.log("created", steps);
   };
 
   return (
     <div className={classes.createJobContainer}>
-      <h1>Create New Job</h1>
+      <div style={{ position: 'sticky', top: 0, background: '#f4f4f4', zIndex: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px' }}>
+  <h1>Create New Job</h1>
+  <div style={{ width: "25%", display: "flex", justifyContent: "space-around", alignItems: "center" }}>
+    <Link to="/">
+      <Button
+        variant="contained"
+        className={`${classes.saveButton} ${classes.formControl}`}
+        style={{ backgroundColor: "red", color: "white" }}
+      >
+        Cancel
+      </Button>
+    </Link>
+    <Link to="/">
+      <Button
+        variant="contained"
+        className={`${classes.saveButton} ${classes.formControl}`}
+        onClick={handleCreateJob}
+        style={{ backgroundColor: "black", color: "white" }}
+      >
+        Save
+      </Button>
+    </Link>
+</div>
+</div>
       <TextField
         label="Title"
         variant="outlined"
@@ -130,68 +189,89 @@ const CreateJob = () => {
       />
       <h2>Steps:</h2>
       <div className={classes.stepsRow}>
-      {steps.map((step, index) => (
-        <div className={classes.stepCard}>
-          <IconButton
-            className={classes.deleteButton}
-            onClick={() => handleDeleteStep(index)}
-          >
-            <Delete fontSize="small" />
-          </IconButton>
-          <Card key={index}>
-            <CardContent>
-              <InputLabel>{`Step Title`}</InputLabel>
-              <Select
-                variant="outlined"
-                fullWidth
-                value={step.title}
-                onChange={(e) =>
-                  handleStepChange(index, "title", e.target.value)
-                }
-                className={classes.formControl}
-                inputProps={{
-                  id: `step-${index + 1}-title`,
-                }}
-              >
-                {stepOptions.map((option, optionIndex) => (
-                  <MenuItem key={optionIndex} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-
-              <TextField
-                label={`Step Description`}
-                variant="outlined"
-                fullWidth
-                multiline
-                rows={4}
-                value={step.description}
-                onChange={(e) =>
-                  handleStepChange(index, "description", e.target.value)
-                }
-              />
-            </CardContent>
-          </Card>
-        </div>
-      ))}
-      </div>
-      <Button
-        variant="contained"
-        className={`${classes.addButton} ${classes.formControl}`}
-        onClick={handleAddStep}
-      >
-        Add Step
-      </Button>
-      <Link to="/">
-        <Button
-          variant="contained"
-          className={`${classes.saveButton} ${classes.formControl}`}
-          onClick={handleCreateJob}
+        {steps.map((step, index) => (
+          <div style={{ position: "relative" }}>
+            <IconButton
+              className={classes.deleteButton}
+              onClick={() => handleDeleteStep(index)}
+            >
+              <Delete fontSize="small" />
+            </IconButton>
+            <div className={classes.jobCard}>
+              <div className={classes.jobHeader}></div>
+              <div className={classes.jobBody}>
+                <div className={classes.jobInfo}>
+                  <FormControl fullWidth>
+                    <InputLabel id={`step-${index + 1}-title-label`}>
+                      Title
+                    </InputLabel>
+                    <Select
+                      variant="outlined"
+                      labelId={`step-${index + 1}-title-label`}
+                      id={`step-${index + 1}-title`}
+                      value={step.title}
+                      onChange={(e) =>
+                        handleStepChange(index, "title", e.target.value)
+                      }
+                      label="Title"
+                    >
+                      {stepOptions.map((option, optionIndex) => (
+                        <MenuItem key={optionIndex} value={option}>
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <div style={{ margin: "8px 0" }}></div>
+                    <InputLabel id={`step-${index + 1}-Description-label`}>
+                      Description
+                    </InputLabel>
+                    <TextField
+                      variant="outlined"
+                      fullWidth
+                      multiline
+                      rows={4}
+                      value={step.description}
+                      onChange={(e) =>
+                        handleStepChange(index, "description", e.target.value)
+                      }
+                    />
+                  </FormControl>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+        <div
+          onClick={handleAddStep}
+          className={classes.jobCard}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "pointer",
+          }}
         >
-          Save
-        </Button>
-      </Link>
+          <div
+            className={classes.jobBody}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "100%",
+              width: "100%",
+            }}
+          >
+            <p>Add a new step</p>
+            <IconButton style={{ width: "10px", height: "10px" }}>
+              <Add />
+            </IconButton>
+          </div>
+        </div>
+      </div>
+      <div style={{ width: "100%" }}>
+        
+      </div>
     </div>
   );
 };
